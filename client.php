@@ -61,6 +61,10 @@
                     <li class="nav-item">
                         <a href="login.php" class="nav-link smoothScroll">Iniciar Sessio</a>
                     </li>
+
+                    <li class="nav-item">
+                        <a href="registrarse.php" class="nav-link smoothScroll">Registrar-se</a>
+                    </li>
                 </ul>
 
                 <ul class="social-icon ml-lg-3">

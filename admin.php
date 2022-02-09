@@ -136,9 +136,8 @@
                         $descripcio = $_POST["cf-descripcio"];
                         $preu = $_POST["cf-preu"];
                         $stock = $_POST["cf-stock"];
-                        $contingut = $_POST["cf-contingut"];
 
-                        $sql = "insert into producte(nom,descripcio,preu,stock,dadesImatge,tipusImatge,contingut) values('" .$nom. "','" .$descripcio. "','" .$preu. "','" .$stock. "','" .$foto. "','" .$extension. "','" .$contingut. "')";
+                        $sql = "insert into producte(nom,descripcio,preu,stock,dadesImatge,tipusImatge,contingut) values('" .$nom. "','" .$descripcio. "','" .$preu. "','" .$stock. "','" .$foto. "','" .$extension. "','null')";
                         $r = mysqli_query($con,$sql);
 
                         if(mysqli_error($con)){
@@ -158,7 +157,6 @@
                     <textarea rows="3" cols="50" name="cf-descripcio" placeholder=" Descripció del producte"></textarea>
                     <input type="text" class="form-control" name="cf-preu" placeholder="Preu">
                     <input type="text" class="form-control" name="cf-stock" placeholder="Stock del Producte">
-                    <input type="text" class="form-control" name="cf-contingut" placeholder="Contingut">
                     <input type="file" name="foto">
                     <button type="submit" class="form-control" id="submit-button" name="submit">Publicar</button>
                 </form>
@@ -282,20 +280,6 @@
                                                                                                         }
                                                                                                     }
                                                                                                     ?>" placeholder="Stock del Producte">
-                    <input type="text" class="form-control" name="cf-contingut2" value="<?php if(isset($_POST['carregar'])){
-                                                                                                        $titul = $_POST['seccio3'];
-                                                                                                        $sql2 = "SELECT contingut
-                                                                                                                FROM producte 
-                                                                                                                WHERE nom LIKE '$titul'";
-                                                                                                        $r = mysqli_query($con,$sql2);
-                                                                                                    
-                                                                                                        while($fila = mysqli_fetch_assoc($r)){
-                                                                                                            foreach ($fila as $value) {
-                                                                                                                echo $value;
-                                                                                                            }
-                                                                                                        }
-                                                                                                    }
-                                                                                                    ?>" placeholder="Contingut">
                     <input type="file" name="foto2">
                     <button type="submit" class="form-control" id="submit-button" name="submit3">Modificar</button>
                 </form>
@@ -325,9 +309,8 @@
                         $descripcio2 = $_POST["cf-descripcio2"];
                         $preu2 = $_POST["cf-preu2"];
                         $stock2 = $_POST["cf-stock2"];
-                        $contingut2 = $_POST["cf-contingut2"];
 
-                        $sql = "update producte set nom='$nom2', descripcio='$descripcio2', preu='$preu2', stock='$stock2', dadesImatge='$foto2', tipusImatge='$extension2', contingut='$contingut2' where nom like '$seccio3'";
+                        $sql = "update producte set nom='$nom2', descripcio='$descripcio2', preu='$preu2', stock='$stock2', dadesImatge='$foto2', tipusImatge='$extension2' where nom like '$seccio3'";
                         $r = mysqli_query($con,$sql);
 
                         if(mysqli_error($con)){
