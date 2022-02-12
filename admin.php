@@ -32,8 +32,9 @@
      <!-- MAIN CSS -->
      <link rel="stylesheet" href="css/tooplate-gymso-style.css">
 </head>
-<body data-spy="scroll" data-target="#navbarNav" data-offset="50">
 
+
+<body data-spy="scroll" data-target="#navbarNav" data-offset="50">
     <!-- MENU BAR -->
     <nav class="navbar navbar-expand-lg fixed-top">
         <div class="container">
@@ -50,37 +51,28 @@
                     <li class="nav-item">
                         <a href="#home" class="nav-link smoothScroll">Home</a>
                     </li>
-
                     <li class="nav-item">
                         <a href="#about" class="nav-link smoothScroll">Insertar</a>
                     </li>
-
                     <li class="nav-item">
                         <a href="#eliminar" class="nav-link smoothScroll">Eliminar</a>
                     </li>
-
                     <li class="nav-item">
                         <a href="#modificar" class="nav-link smoothScroll">Modificar</a>
                     </li>
-
                     <li class="nav-item">
                         <a href="client.php" class="nav-link smoothScroll">Visió Usuari</a>
                     </li>
                 </ul>
             </div>
-
         </div>
     </nav>
 
-
      <!-- HERO -->
      <section class="hero d-flex flex-column justify-content-center align-items-center" id="home">
-
             <div class="bg-overlay"></div>
-
                <div class="container">
                     <div class="row">
-
                          <div class="col-lg-8 col-md-10 mx-auto col-12">
                               <div class="hero-text mt-5 text-center">
                                     <!-- Titul principal de la pagina -->
@@ -167,7 +159,7 @@
      <div class="container">
      <section id="eliminar">
          <br>
-    <!-- Eliminar una producte -->
+    <!-- Eliminar una producte amb el formulari per eliminar el producte -->
      <h2 class="mb-4 pb-2" data-aos="fade-up" data-aos-delay="150">Eliminar una producte</h2>
      <h3>Escolleig el producte que vols eliminar.</h3><br>
      <?php            
@@ -200,7 +192,7 @@
      </div>
     </section>
     <br>
-    <!-- Modificar una producte -->
+    <!-- Modificar una producte amb el formulari per modificar el producte -->
     <section class="about section" id="modificar">
         <br>
         <div class="container">

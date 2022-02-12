@@ -28,7 +28,6 @@
      <meta name="keywords" content="">
      <meta name="author" content="">
      <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-
      <link rel="stylesheet" href="css/bootstrap.min.css">
      <link rel="stylesheet" href="css/font-awesome.min.css">
      <link rel="stylesheet" href="css/aos.css">
@@ -41,12 +40,10 @@
     <!-- MENU BAR -->
     <nav class="navbar navbar-expand-lg fixed-top">
         <div class="container">
-            
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
                 aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ml-lg-auto">
                     <li class="nav-item">
@@ -54,22 +51,16 @@
                     </li>
                 </ul>
             </div>
-
         </div>
     </nav>
 
-
      <!-- HERO -->
      <section class="hero d-flex flex-column justify-content-center align-items-center" id="home">
-
             <div class="bg-overlay"></div>
-
                <div class="container">
                     <div class="row">
-
                          <div class="col-lg-8 col-md-10 mx-auto col-12">
                               <div class="hero-text mt-5 text-center">
-
                                     <h1 class="text-white" data-aos="fade-up" data-aos-delay="500">INICIA SESSIÓ</h1>
                                     <p data-aos="fade-up" data-aos-delay="300">
                 <div class="container">
@@ -80,39 +71,7 @@
                 $contrasenyaEn = md5("JVjv2021");
                 $contrasenyaEn2 = md5("JVjv2021");
                 // Iniciar sessio
-                session_start();
-                if(!isset($_REQUEST['usuari'])){
-                    $_SESSION["usuari"] = "admin";
-                    $_SESSION["password"] = $contrasenyaEn;
-                }
-
-                if(!isset($_REQUEST['usuari2'])){
-                    $_SESSION["usuari2"] = "client";
-                    $_SESSION["password2"] = $contrasenyaEn2;
-                }
-
-                if(isset($_POST['submit'])){
-                    $usuari = $_POST['cf-usuari'];
-                    $contrasenya = $_POST['cf-contrasenya'];
-                    $contrasenyaUserEnc = md5($contrasenya);
-
-                    if($usuari == $_SESSION['usuari']){
-                        echo "<p>Coloca el usuari o la contrasenya correctament.</p>";
-                        if($contrasenyaEn == $contrasenyaUserEnc){
-                            echo "Iniciat correctament. ";
-                            header('Location: admin.php');
-                        }
-                    } else if ($usuari == $_SESSION["usuari2"]){
-                        echo "hola";
-                            echo "<p>Coloca el usuari o la contrasenya correctament.</p>";
-                            if($contrasenyaEn2 == $contrasenyaUserEnc){
-                                echo "Iniciat correctament. ";
-                                header('Location: client.php');
-                            }
-                    } 
-                    } else {
-                        echo "<p>Coloca el usuari o la contrasenya correctament.</p>";
-                    }
+                
                 ?>
                 <!-- Formulari del login -->
                 <form method="post" class="contact-form webform" data-aos="fade-up" data-aos-delay="150" role="form">
@@ -122,14 +81,12 @@
                 </form>
             </div>
         </div>                             
-                                    </p>
-                              </div>
-                         </div>
-
-                    </div>
-               </div>
-     </section>
-         
+    </p>
+</div>
+</div>
+</div>
+</div>
+</section>
 
      <!-- SCRIPTS -->
      <script src="js/jquery.min.js"></script>

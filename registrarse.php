@@ -21,6 +21,10 @@
             p{
                 color: white;
             }
+
+            .container{
+                color: white;
+            }
         </style>
      <meta charset="UTF-8">
      <meta http-equiv="X-UA-Compatible" content="IE=Edge">
@@ -54,7 +58,6 @@
                     </li>
                 </ul>
             </div>
-
         </div>
     </nav>
 
@@ -69,8 +72,8 @@
 
                          <div class="col-lg-8 col-md-10 mx-auto col-12">
                               <div class="hero-text mt-5 text-center">
-
-                                    <h1 class="text-white" data-aos="fade-up" data-aos-delay="500">INICIA SESSIÓ</h1>
+                                    <br>
+                                    <h1 class="text-white" data-aos="fade-up" data-aos-delay="500">REGISTRAT</h1>
                                     <p data-aos="fade-up" data-aos-delay="300">
                 <div class="container">
                 <div class="ml-auto col-lg-12 col-md-12 col-12">
@@ -97,18 +100,35 @@
                 }
 
                 if(isset($_POST['submit'])){
-                    $email = $_POST["cf-email"];
-                    $nom = $_POST[];
-                    $cognoms = $_POST[];
-                    $direccio = $_POST[];
-                    $poblacio = $_POST[];
-                    $cPostal = $_POST[];
-                    $dadesFoto = $_POST[];
-                    $tipusFoto = $_POST[];
-                    $admin = $_POST=[];
-                    $contrasenya = $_POST["cf-contrasenya"];
+                    $imgContenido = $_FILES["foto2"]["tmp_name"];
+                    $foto2 = addslashes(file_get_contents($imgContenido));
+                    $posicio = strpos($_FILES["foto2"]["type"], '/');
+                    $extension = substr($_FILES["foto2"]["type"], $posicio);
+                    $correcte = false;
 
-                    $sql = "insert into producte(nom,descripcio,preu,stock,dadesImatge,tipusImatge,contingut) values('" .$nom. "','" .$descripcio. "','" .$preu. "','" .$stock. "','" .$foto. "','" .$extension. "','null')";
+                    if($extension == '/png'){
+                        $correcte = true;
+                    } else if ($extension == '/jpg'){
+                        $correcte = true;
+                    } else if ($extension == '/gif'){
+                        $correcte = true;
+                    } else if ($extension == '/jpeg'){
+                        $correcte = true;
+                    } else {
+                        $correcte = false;
+                    }
+
+                    $email = $_POST["cf-email"];
+                    $contrasenya = $_POST["cf-contrasenya"];
+                    $nom = $_POST["cf-nom"];
+                    $cognoms = $_POST["cf-cognoms"];
+                    $direccio = $_POST["cf-direccio"];
+                    $poblacio = $_POST["cf-poblacio"];
+                    $cPostal = $_POST["cf-cPostal"];
+                    $dadesFoto = $foto2;
+                    $tipusFoto = $extension;
+
+                    $sql = "insert into usuari(email,password,nom,cognoms,direccio,poblacio,cPostal,dadesFoto,tipusFoto,admin) values('" .$email. "','" .$contrasenya. "','" .$nom. "','" .$cognoms. "','" .$direccio. "','" .$poblacio. "','" .$cPostal. "','". $dadesFoto ."','". $tipusFoto ."',' 0 ')";
                     $r = mysqli_query($con,$sql);
 
                     if(mysqli_error($con)){
@@ -117,32 +137,29 @@
                         echo "Dades introduides correctament. ";
                         echo "<br>";
                     }
-                    } else {
-                        echo "<p>Coloca el usuari o la contrasenya correctament.</p>";
-                    }
+                }
                 ?>
+
                 <!-- Formulari del login -->
-                <form method="post" class="contact-form webform" data-aos="fade-up" data-aos-delay="150" role="form">
-                    <input type="text" class="form-control" name="cf-email" placeholder="Usuari">
-                    <input type="text" class="form-control" name="cf-contrasenya" placeholder="Contrasenya">
+                <form method="post" class="contact-form webform" data-aos="fade-up" data-aos-delay="150" role="form" enctype="multipart/form-data">
+                    <input type="email" class="form-control" name="cf-email" placeholder="Email">
+                    <input type="password" class="form-control" name="cf-contrasenya" placeholder="Contrasenya">
                     <input type="text" class="form-control" name="cf-nom" placeholder="Nom">
                     <input type="text" class="form-control" name="cf-cognoms" placeholder="Cognoms">
                     <input type="text" class="form-control" name="cf-direccio" placeholder="Direccio">
                     <input type="text" class="form-control" name="cf-poblacio" placeholder="Poblacio">
                     <input type="text" class="form-control" name="cf-cPostal" placeholder="cPostal">
-                    <input type="file" name="foto">
+                    <input type="file" name="foto2">
                     <button type="submit" class="form-control" id="submit-button" name="submit">Registrar-se</button>
                 </form>
             </div>
         </div>                             
-                                    </p>
-                              </div>
-                         </div>
-
-                    </div>
-               </div>
-     </section>
-         
+        </p>
+    </div>
+</div>
+</div>
+</div>
+</section>
 
      <!-- SCRIPTS -->
      <script src="js/jquery.min.js"></script>
