@@ -8,7 +8,7 @@
     ?>
     <!-- Titul de la pagina de inici de sessio -->
      <title>Registrar-se</title>
-     <!-- Estils de la pagina login -->
+     <!-- Estils de la pagina de registre -->
         <style>
             table, tr, th, td{
                 border: 1px solid #000000;
@@ -79,15 +79,6 @@
                 <div class="ml-auto col-lg-12 col-md-12 col-12">
                 <!-- Registrar el usuari en la base de dades -->
                 <?php
-
-                $sql = "select nom from usuari";
-                $r = mysqli_query($con,$sql);
-
-                while($fila = mysqli_fetch_assoc($r)){
-                    foreach ($fila as $value) {
-                        echo $value;
-                    }
-                }
                 
                 // Encriptar dos contrasenyes per poderles cambiar si fa falta
                 
@@ -128,7 +119,9 @@
                     $dadesFoto = $foto2;
                     $tipusFoto = $extension;
 
-                    $sql = "insert into usuari(email,password,nom,cognoms,direccio,poblacio,cPostal,dadesFoto,tipusFoto,admin) values('" .$email. "','" .$contrasenya. "','" .$nom. "','" .$cognoms. "','" .$direccio. "','" .$poblacio. "','" .$cPostal. "','". $dadesFoto ."','". $tipusFoto ."',' 0 ')";
+                    $contrasenyaEn = md5($contrasenya);
+
+                    $sql = "insert into usuari(email,password,nom,cognoms,direccio,poblacio,cPostal,dadesFoto,tipusFoto,admin) values('" .$email. "','" .$contrasenyaEn. "','" .$nom. "','" .$cognoms. "','" .$direccio. "','" .$poblacio. "','" .$cPostal. "','". $dadesFoto ."','". $tipusFoto ."',' 0 ')";
                     $r = mysqli_query($con,$sql);
 
                     if(mysqli_error($con)){
@@ -140,7 +133,7 @@
                 }
                 ?>
 
-                <!-- Formulari del login -->
+                <!-- Formulari del registre -->
                 <form method="post" class="contact-form webform" data-aos="fade-up" data-aos-delay="150" role="form" enctype="multipart/form-data">
                     <input type="email" class="form-control" name="cf-email" placeholder="Email">
                     <input type="password" class="form-control" name="cf-contrasenya" placeholder="Contrasenya">
@@ -149,6 +142,7 @@
                     <input type="text" class="form-control" name="cf-direccio" placeholder="Direccio">
                     <input type="text" class="form-control" name="cf-poblacio" placeholder="Poblacio">
                     <input type="text" class="form-control" name="cf-cPostal" placeholder="cPostal">
+                    <p>Imatge de Perfil: </p>
                     <input type="file" name="foto2">
                     <button type="submit" class="form-control" id="submit-button" name="submit">Registrar-se</button>
                 </form>

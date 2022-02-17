@@ -5,7 +5,31 @@
     <!-- Conexio amb la base de dades -->
     <?php
         include 'connexio.php';
+        
+        //Iniciar una nueva sesió o reanudar la existent.
+        session_start();
+        //Si existeix la sesió "cliente"..., la guardarem en una variable.
+        if (isset($_SESSION['usuari'])){
+            $usuari = $_SESSION['usuari'];
+        }else{
+            header('Location: index.php'); //Aqui lo redireccionem al lloc de iniciar sessió.
+            die() ;
+        }
+
+        $sql = "SELECT COUNT(*) FROM usuari WHERE nom LIKE '". $usuari ."' AND admin = 1";
+        $r = mysqli_query($con,$sql);
+
+        while($fila = mysqli_fetch_assoc($r)){
+            foreach ($fila as $value) {
+                $usuariAdminCreat = $value;
+            }
+        }
+
+        if($usuariAdminCreat == 0){
+            header('Location: index.php'); //Aqui lo redireccionem al lloc de iniciar sessió.
+        }
     ?>
+
     <!-- Titul de la pagina -->
      <title>Admin - Configuració Productes</title>
      <!-- Estils de la pagina -->
@@ -81,6 +105,21 @@
                                     <p data-aos="fade-up" data-aos-delay="300">
                                         <!-- Comprobacio de la pagina -->
                                         <?php 
+                                            $sql = "SELECT COUNT(*) FROM usuari WHERE nom LIKE 'admin'";
+                                            $r = mysqli_query($con,$sql);
+
+                                            while($fila = mysqli_fetch_assoc($r)){
+                                                foreach ($fila as $value) {
+                                                    $usuariAdminCreat = $value;
+                                                }
+                                            }
+
+                                            if($usuariAdminCreat == 0){
+                                                $contrasenyaEn = md5("JVjv2021");
+                                                $sql = "insert into usuari(email,password,nom,cognoms,direccio,poblacio,cPostal,dadesFoto,tipusFoto,admin) values('admin@gmail.com','". $contrasenyaEn ."','admin','admin','null','null','null','null','null',' 1 ')";
+                                                $r = mysqli_query($con,$sql);
+                                            }
+                                            
                                             if (!$con) {
                                                 echo ("Conexio fallida " . mysqli_connect_error());
                                             } else{
@@ -91,6 +130,20 @@
                                     <a href="#about" class="btn custom-btn bordered mt-3" data-aos="fade-up" data-aos-delay="700">Insertar Productes</a>
                                     <a href="#eliminar" class="btn custom-btn bordered mt-3" data-aos="fade-up" data-aos-delay="700">Eliminar Productes</a>
                                     <a href="#modificar" class="btn custom-btn bordered mt-3" data-aos="fade-up" data-aos-delay="700">Modificar Productes</a>
+                                    <?php
+                                        if(isset($_POST['tancarSessio'])){
+                                            unset($_SESSION["usuari"]);
+                                            if (isset($_SESSION['admin'])){
+                                                $cliente = $_SESSION['admin'];
+                                            }
+                                            header('Location: index.php'); //Aqui lo redireccionem al lloc de iniciar sessió.
+                                            die() ;
+                                        }
+                                    ?>
+                                    <form action="#" method="post" class="contact-form webform" data-aos="fade-up" data-aos-delay="150" role="form">
+                                        <br>
+                                        <button class="form-control" id="submit-button" name="tancarSessio">Tancar Sessió</button>
+                                    </form>
                               </div>
                          </div>
                     </div>
