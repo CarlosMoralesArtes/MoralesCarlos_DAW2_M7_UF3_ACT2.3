@@ -109,6 +109,11 @@
         small{
             color: red;
         }
+
+        .noProductes{
+            text-align: center;
+            color: red;
+        }
     </style>
 
     <!-- =====Titul de la pagina===== -->
@@ -236,6 +241,17 @@
                 }
             }
         }
+
+        // Comprovador de productes en la base de dades
+        $sql11 = "SELECT COUNT(*) 
+                  FROM producte";
+        $r11 = mysqli_query($con,$sql11);
+        while($fila11 = mysqli_fetch_assoc($r11)){
+            foreach ($fila11 as $camp => $valor) { 
+                $productesBaseDeDades = $valor;
+            }
+        }
+        if($productesBaseDeDades != 0){
                 // Aqui es mostran tots els productes de la base de dades producte
                 $sql = "SELECT * 
                           FROM producte";
@@ -304,6 +320,9 @@
                     echo "</form>";
                     echo "</div>";
                 }
+            } else {
+                echo "<p class='noProductes'>No hi han productes en la botiga.</p>";
+            }
         ?>
         </div>
      </section>

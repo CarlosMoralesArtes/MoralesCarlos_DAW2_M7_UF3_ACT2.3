@@ -16,6 +16,11 @@
             header('Location: index.php'); //Aqui lo redireccionem al lloc de iniciar sessió.
             die() ;
         }
+
+        function tornar(){
+            header('Location: index.php'); //Aqui lo redireccionem al lloc de iniciar sessió.
+            die() ;
+        }
     
         // Es comprova si existeix un usuari administrador
         $sql = "SELECT COUNT(*) FROM usuari WHERE nom LIKE 'admin'";
@@ -46,7 +51,6 @@
 
         // Inicialitzacio de la variable llista
         $llistaCompraRealitzada = 0;
-
         
     ?>
 
@@ -167,24 +171,8 @@
                                             echo "<p class='compraRealitzada'>Producte afegit a la cesta.</p>";   
                                         }
                                     ?>
-                                    <form action="#" method="post" class="contact-form webform" data-aos="fade-up" data-aos-delay="150" role="form">
-                                        <br>
-                                        <button class="form-control" id="submit-button" name="tancarSessio">Tancar Sessió</button>
-                                    </form>
                                     <h1 class="text-white" data-aos="fade-up" data-aos-delay="150">Llista Virtual</h1>
                                     <?php
-                                        // Aqui es pot veure el apartat de tancar la sessio on s'eliminan totes les dades de la sessio
-                                        if(isset($_POST['tancarSessio'])){
-                                            unset($_SESSION["usuari"]);
-                                            if (isset($_SESSION['admin'])){
-                                                $cliente = $_SESSION['admin'];
-                                            }
-                                            unset($_SESSION['productesSeleccionats']);
-                                            session_destroy();
-                                            header('Location: index.php'); //Aqui lo redireccionem al lloc de iniciar sessió.
-                                            die() ;
-                                        }
-                                        
                                         // Inicialitzacio de variables
                                         $suma = 0;
                                         $suma2 = 0;
@@ -255,8 +243,7 @@
                                             }
                                             unset($_SESSION['productesSeleccionats']);
                                             session_destroy();
-                                            header('Location: index.php'); //Aqui lo redireccionem al lloc de iniciar sessió.
-                                            die() ;
+                                            tornar();
                                         }
                                         
                                         // Creacio de la llista de la compra dins de una taula

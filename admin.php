@@ -10,6 +10,10 @@
         $procedimentInsertarCorrecte = 0;
         $procedimentModificatCorrecte = 0;
         $procedimentEliminarCorrecte = 0;
+        $imatgeIncorrecta = 0;
+        $modificarcontador = 0;
+        $campVuit = 0;
+        $insertarcontador = 0;
 
         // Insertar el producte
         if(isset($_POST['submit'])){
@@ -38,6 +42,21 @@
             $preu = $_POST["cf-preu"];
             $stock = $_POST["cf-stock"];
 
+            // Control de errors del registre de usuaris
+            if($nom != ""){
+                $insertarcontador++;
+            }
+            if($descripcio != ""){
+                $insertarcontador++;
+            }
+            if($preu != ""){
+                $insertarcontador++;
+            }
+            if($stock != ""){
+                $insertarcontador++;
+            }
+
+            if($insertarcontador == 4){
             $sql = "insert into producte(nom,descripcio,preu,stock,dadesImatge,tipusImatge,contingut) values('" .$nom. "','" .$descripcio. "','" .$preu. "','" .$stock. "','" .$foto. "','" .$extension. "','null')";
             $r = mysqli_query($con,$sql);
 
@@ -45,8 +64,12 @@
                 // Mostrar la confirmacio de la insercio del producte
                 $procedimentInsertarCorrecte = 1;
             }
+
+            } else {
+                $campVuit = 1;
+            }
         } else {
-            echo "El arxiu te que ser png, jpg, jpeg o gif. ";
+            $imatgeIncorrecta = 1;
         }
     }
 
@@ -91,18 +114,36 @@
             $descripcio2 = $_POST["cf-descripcio2"];
             $preu2 = $_POST["cf-preu2"];
             $stock2 = $_POST["cf-stock2"];
+            
+            // Control de errors del registre de usuaris
+            if($nom2 != ""){
+                $modificarcontador++;
+            }
+            if($descripcio2 != ""){
+                $modificarcontador++;
+            }
+            if($preu2 != ""){
+                $modificarcontador++;
+            }
+            if($stock2 != ""){
+                $modificarcontador++;
+            }
 
-            $sql = "update producte set nom='$nom2', descripcio='$descripcio2', preu='$preu2', stock='$stock2', dadesImatge='$foto2', tipusImatge='$extension2' where nom like '$seccio3'";
-            $r = mysqli_query($con,$sql);
+            if($contador == 4){
+                $sql = "update producte set nom='$nom2', descripcio='$descripcio2', preu='$preu2', stock='$stock2', dadesImatge='$foto2', tipusImatge='$extension2' where nom like '$seccio3'";
+                $r = mysqli_query($con,$sql);
 
-            if(mysqli_error($con)){
-                echo "ERROR: ".mysqli_error($con);
+                if(mysqli_error($con)){
+                    echo "ERROR: ".mysqli_error($con);
+                } else {
+                    // Mostrar la confirmacio de la modificacio del producte
+                    $procedimentModificatCorrecte = 1;
+                }
             } else {
-                // Mostrar la confirmacio de la modificacio del producte
-                $procedimentModificatCorrecte = 1;
+                $campVuit = 1;
             }
         } else {
-            echo "El arxiu te que ser png, jpg, jpeg o gif. ";
+            $imatgeIncorrecta = 1;
         }
     }
         
@@ -156,12 +197,21 @@
             }
 
             .compraRealitzada{
-            background-color: green;
-            width: 100%;
-            color: white;
-            padding-top: 10px;
-            padding-bottom: 10px;
-            text-align: center;
+                background-color: green;
+                width: 100%;
+                color: white;
+                padding-top: 10px;
+                padding-bottom: 10px;
+                text-align: center;
+            }
+
+            .imatgeIncorrecta{
+                background-color: red;
+                width: 100%;
+                color: white;
+                padding-top: 10px;
+                padding-bottom: 10px;
+                text-align: center;
             }
         </style>
      <meta charset="UTF-8">
@@ -294,6 +344,14 @@
 
         if($procedimentEliminarCorrecte == 1){
             echo "<p class='compraRealitzada'>Producte eliminat correctament.</p>";   
+        }
+
+        if($imatgeIncorrecta == 1){
+            echo "<p class='imatgeIncorrecta'>El arxiu te que ser png, jpg, jpeg o gif.</p>";
+        }
+
+        if($campVuit == 1){
+            echo "<p class='imatgeIncorrecta'>No pots deixar cap camp vuit.</p>";
         }
      ?>
      <br>
