@@ -129,7 +129,7 @@
                 $modificarcontador++;
             }
 
-            if($contador == 4){
+            if($modificarcontador == 4){
                 $sql = "update producte set nom='$nom2', descripcio='$descripcio2', preu='$preu2', stock='$stock2', dadesImatge='$foto2', tipusImatge='$extension2' where nom like '$seccio3'";
                 $r = mysqli_query($con,$sql);
 
