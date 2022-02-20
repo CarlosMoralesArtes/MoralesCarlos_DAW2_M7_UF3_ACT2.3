@@ -117,7 +117,7 @@
             die() ;
         }
 
-        // Es comprova si existeix un usuari administrador
+        // Es comprova si el usuari es un usuari administrador
         $sql = "SELECT COUNT(*) FROM usuari WHERE nom LIKE '". $usuari ."' AND admin = 1";
         $r = mysqli_query($con,$sql);
 

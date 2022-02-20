@@ -5,6 +5,23 @@
     <!-- Connexio amb la base de dades -->
     <?php
         include 'connexio.php';
+
+        // Comprovacio i creacio del usuari administrador que en el cas de que no estigui creat es creara
+        $sql = "SELECT COUNT(*) FROM usuari WHERE nom LIKE 'admin'";
+        $r = mysqli_query($con,$sql);
+
+        while($fila = mysqli_fetch_assoc($r)){
+            foreach ($fila as $value) {
+                $usuariAdminCreat = $value;
+            }
+        }
+
+        // Si el usuari no esta creat es creara gracies a aquest insert into
+        if($usuariAdminCreat == 0){
+            $contrasenyaEn = md5("JVjv2021");
+            $sql = "insert into usuari(email,password,nom,cognoms,direccio,poblacio,cPostal,dadesFoto,tipusFoto,admin) values('admin@gmail.com','". $contrasenyaEn ."','admin','admin','null','null','null','null','/png',' 1 ')";
+            $r = mysqli_query($con,$sql);
+        }
     ?>
     <!-- =====Titul de la pagina===== -->
      <title>Registrar-se | AmazonBlue</title>
