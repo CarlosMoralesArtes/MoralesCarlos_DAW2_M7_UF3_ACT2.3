@@ -24,8 +24,8 @@
             color: white;
         }
     </style>
-    <!-- Titul de la pagina de inici de sessio -->
-     <title>Iniciar Sessio</title>
+    <!-- =====Titul de la pagina===== -->
+     <title>Iniciar Sessio | AmazonBlue</title>
      <!-- Estils de la pagina login -->
         <style>
             table, tr, th, td{
@@ -67,6 +67,7 @@
                     <li class="nav-item">
                         <a href="registrarse.php" class="nav-link smoothScroll">Registrar-se</a>
                         <?php
+                            // Boto que solament apareix cuan tens la sessio iniciada per poder tonar a la pagina on estan els productes
                             if (isset($_SESSION['usuari'])){
                                 echo "<a href='client.php' class='nav-link smoothScroll'>Tornar</a>";
                             }
@@ -156,7 +157,7 @@
                 <!-- Formulari del login -->
                 <form method="post" class="contact-form webform" data-aos="fade-up" data-aos-delay="150" role="form">
                     <input type="text" class="form-control" name="cf-usuari" placeholder="Usuari">
-                    <input type="text" class="form-control" name="cf-contrasenya" placeholder="Contrasenya">
+                    <input type="password" class="form-control" name="cf-contrasenya" placeholder="Contrasenya">
                     <button type="submit" class="form-control" id="submit-button" name="submit">Iniciar Sessio</button>
                 </form>
             </div>

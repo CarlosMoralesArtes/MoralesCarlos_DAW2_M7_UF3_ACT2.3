@@ -6,8 +6,8 @@
     <?php
         include 'connexio.php';
     ?>
-    <!-- Titul de la pagina de inici de sessio -->
-     <title>Registrar-se</title>
+    <!-- =====Titul de la pagina===== -->
+     <title>Registrar-se | AmazonBlue</title>
      <!-- Estils de la pagina de registre -->
         <style>
             table, tr, th, td{
@@ -81,7 +81,6 @@
                 <?php
                 
                 // Encriptar dos contrasenyes per poderles cambiar si fa falta
-                
                 $usuari = "admin";
                 $contrasenyaEn = md5("JVjv2021");
 
@@ -90,6 +89,7 @@
                     $_SESSION["password"] = $contrasenyaEn;
                 }
 
+                // Part on es pujan les dades del registre a la base de dades de usuari
                 if(isset($_POST['submit'])){
                     $imgContenido = $_FILES["foto2"]["tmp_name"];
                     $foto2 = addslashes(file_get_contents($imgContenido));

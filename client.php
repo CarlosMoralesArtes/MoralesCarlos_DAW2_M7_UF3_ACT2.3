@@ -101,10 +101,18 @@
             padding-top: 10px;
             padding-bottom: 10px;
         }
+
+        .blau{
+            color: #00B4FF;
+        }
+
+        small{
+            color: red;
+        }
     </style>
 
     <!-- =====Titul de la pagina===== -->
-     <title>AmazonCar</title>
+     <title>Botiga | AmazonBlue</title>
      <meta charset="UTF-8">
      <meta http-equiv="X-UA-Compatible" content="IE=Edge">
      <meta name="description" content="">
@@ -122,7 +130,7 @@
     <nav class="navbar navbar-expand-lg fixed-top">
         <div class="container">
             <!-- Titul principal de la pagina -->
-            <a class="navbar-brand" href="client.php">AmazonCar</a>
+            <a class="navbar-brand" href="client.php">Amazon<span class="blau">Blue</span></a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
                 aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -167,10 +175,13 @@
                                     <!-- Missatge de benvinguda al usuari amb la seva imatge de perfil -->
                                     <div class="benvinguda">
                                         <?php 
+                                            // Part que mostra si el producte s'ha afegit a la llista
                                             if($compraRealitzadaEn == 1){
                                                 echo "<p class='compraRealitzada'>Producte afegit a la cesta.</p>";   
                                             }
+                                            // Benvinguda del usuari amb el seu nom i la seva imatge de perfil
                                             echo "<p>Benvingut de nou " . $_SESSION['usuari'] . "</p>";
+                                            if($_SESSION['usuari'] != "admin"){
                                             $sql = "SELECT dadesFoto, tipusFoto
                                                     FROM usuari
                                                     WHERE nom LIKE '$client'";
@@ -182,9 +193,10 @@
                                             }
                                             echo '<img src="data:'.$tipusImatge.';base64,'.base64_encode($dadesImatge).'" class="imgRodona">';
                                         }
+                                    }
                                         ?>
                                     </div>
-                                    <h1 class="text-white" data-aos="fade-up" data-aos-delay="150">AmazonCar</h1>
+                                    <h1 class="text-white" data-aos="fade-up" data-aos-delay="150">Amazon<span class="blau">Blue</span></h1>
                                     <h6 data-aos="fade-up" data-aos-delay="150">Compra tot el que vulguis!</h6><br>
                                     <a href="#productes" class="btn custom-btn bordered mt-3" data-aos="fade-up" data-aos-delay="150">Productes</a>
                                     <a href="#contact" class="btn custom-btn bordered mt-3" data-aos="fade-up" data-aos-delay="150">Contacta</a>
@@ -205,14 +217,26 @@
              <br>
              <h1>PRODUCTES</h1>
          <?php
-         if(isset($_POST["seleccionat"])){
-            if(isset($_SESSION['productesSeleccionats'])){
-                $seleccionats = $_SESSION['productesSeleccionats'];
-                $_SESSION['productesSeleccionats'] = $seleccionats ." ; ". $_POST["seleccionat"];
-            } else {
-                $_SESSION['productesSeleccionats'] = $_POST["seleccionat"];
+
+        // Inicialitzacio de la variable del contador de stock
+        if(!isset($contadordeStock)){
+            $contadordeStock = 0;
+        }
+        // Inicialitzacio de la variable del contador del numero de seleccions de productes
+        $seleccionatsMaxim = 0;
+
+        // Part que afegeix el producte a la sessio agafant la sessio existent i afegint-li el nou producte seleccionat creant un array que despres sera separat en la pagina de llista per ser mostrat
+        if(isset($_POST["seleccionat"])){
+            if($seleccionatsMaxim != 1){
+                if(isset($_SESSION['productesSeleccionats'])){
+                        $seleccionats = $_SESSION['productesSeleccionats'];
+                        $_SESSION['productesSeleccionats'] = $seleccionats ." ; ". $_POST["seleccionat"];
+                } else {
+                    $_SESSION['productesSeleccionats'] = $_POST["seleccionat"];
+                }
             }
-         }
+        }
+                // Aqui es mostran tots els productes de la base de dades producte
                 $sql = "SELECT * 
                           FROM producte";
                 $r = mysqli_query($con,$sql);
@@ -221,6 +245,8 @@
                     foreach ($fila as $camp => $valor) { 
                         $tipusImatge = $fila["tipusImatge"];
                         $dadesImatge = $fila["dadesImatge"];
+                        $stockCorrecte = $fila["stock"];
+                        $codiProducte = $fila["codiProducte"];
                     }
                     echo '<img src="data:'.$tipusImatge.';base64,'.base64_encode($dadesImatge).'">';
                     echo "<br><br>";
@@ -238,7 +264,43 @@
                     echo "</p>";
                     echo "</h4>";
                     echo "<form method='post' class='contact-form webform' data-aos='fade-up' data-aos-delay='150' role='form'>";
-                    echo "<button class='form-control' name='seleccionat' value='". $fila['codiProducte'] ."'>Comprar</button>";
+                    $seleccionatsMaxim = 0;
+                    // Si existeix la sessio dels productes seleccionats i la variable productesSeleccionats (que es el array que es crea amb l'antiga seleccio amb la nova seleccio) existeix, entra a aquest if
+                    if(isset($_SESSION["productesSeleccionats"])){
+                        $productesSeparats2 = explode(" ; ", $_SESSION["productesSeleccionats"]);
+                        $quantitatLlista2 = (count($productesSeparats2));
+                        for ($i=0; $i < $quantitatLlista2; $i++) {
+                            if($productesSeparats2[$i] == $codiProducte){
+                                $contadordeStock++;
+                            }
+                        }
+                        // Si el contador de stock (que es el que s'ha seleccionat) es major o igual al stock correcte (que es el stock que hi ha a la base de dades) s'entra a aquest if
+                        if($contadordeStock >= $stockCorrecte || $stockCorrecte < 0){
+                            // Es mostra el usuari disabled ja que no es poden fer mes compres perque no hi ha stock
+                            echo "<button class='form-control' disabled ='true' name='seleccionat' value='". $fila['codiProducte'] ."'>Comprar</button>";
+                            // Es mostra un missatge petit per indicar al usuari que no hi ha stock
+                            echo "<small>No hi ha stock suficient, perdonin les molesties.</small>";
+                        } else {
+                            // Si no entra al if es mostra el boto correctament
+                            echo "<button class='form-control' name='seleccionat' value='". $fila['codiProducte'] ."'>Comprar</button>";
+                            // Amb un missatge que t'informa de que encara pots comprar ja que si que hi ha stock
+                            echo "<small>Encara tens temps de comprar!</small>";
+                        }
+                    } else {
+                        // Si la sessio dels productes seleccionats i la variable de productes seleccionats no existeix s'entra a aquest if
+                        // Si el stock correcte (que es el stock que hi ha a la base de dades) es menor o igual a 0 entra a aquest if
+                        if ($stockCorrecte <= 0){
+                            // Es mostra el boto de comprar disabled ja que no hi ha stock
+                            echo "<button class='form-control' disabled ='true' name='seleccionat' value='". $fila['codiProducte'] ."'>Comprar</button>";
+                            // Es mostra un petit missatge informant al usuari de que no hi ha stock
+                            echo "<small>No hi ha stock suficient, perdonin les molesties.</small>";
+                        } else {
+                            // Si el stock es correcte es mostra el boto correctament
+                            echo "<button class='form-control' name='seleccionat' value='". $fila['codiProducte'] ."'>Comprar</button>";
+                            // Es mostra una petita informacio informant al usuari de que encara pot comprar el producte ja que hi ha suficient stock
+                            echo "<small>Encara tens temps de comprar!</small>";
+                        }
+                    }
                     echo "</form>";
                     echo "</div>";
                 }
@@ -261,7 +323,7 @@
           </div>
      </section>
 
-     <!-- =====Footer===== -->
+     <!-- =====Footer de la pagina===== -->
      <footer class="site-footer">
           <div class="container">
                <div class="row">
@@ -280,7 +342,7 @@
           </div>
      </footer>
 
-    <!-- =====Modal===== -->
+    <!-- =====Modal de la pagina===== -->
     <div class="modal fade" id="membershipForm" tabindex="-1" role="dialog" aria-labelledby="membershipFormLabel" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -293,7 +355,7 @@
       </div>
     </div>
 
-     <!-- =====Scripts===== -->
+     <!-- =====Scripts de la pagina===== -->
      <script src="js/jquery.min.js"></script>
      <script src="js/bootstrap.min.js"></script>
      <script src="js/aos.js"></script>
