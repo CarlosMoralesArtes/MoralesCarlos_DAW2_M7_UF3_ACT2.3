@@ -100,6 +100,7 @@
                 // Encriptar dos contrasenyes per poderles cambiar si fa falta
                 $usuari = "admin";
                 $contrasenyaEn = md5("JVjv2021");
+                $contador = 0;
 
                 if(!isset($_REQUEST['usuari'])){
                     $_SESSION["usuari"] = "admin";
@@ -136,16 +137,50 @@
                     $dadesFoto = $foto2;
                     $tipusFoto = $extension;
 
-                    $contrasenyaEn = md5($contrasenya);
+                    // Control de errors del registre de usuaris
+                    if($email != ""){
+                        $contador++;
+                    }
+                    if($contrasenya != ""){
+                        $contador++;
+                    }
+                    if($nom != ""){
+                        $contador++;
+                    }
+                    if($cognoms != ""){
+                        $contador++;
+                    }
+                    if($direccio != ""){
+                        $contador++;
+                    }
+                    if($poblacio != ""){
+                        $contador++;
+                    }
+                    if($cPostal != ""){
+                        $contador++;
+                    }
+                    if($dadesFoto != ""){
+                        $contador++;
+                    }
+                    if($tipusFoto != ""){
+                        $contador++;
+                    }
 
-                    $sql = "insert into usuari(email,password,nom,cognoms,direccio,poblacio,cPostal,dadesFoto,tipusFoto,admin) values('" .$email. "','" .$contrasenyaEn. "','" .$nom. "','" .$cognoms. "','" .$direccio. "','" .$poblacio. "','" .$cPostal. "','". $dadesFoto ."','". $tipusFoto ."',' 0 ')";
-                    $r = mysqli_query($con,$sql);
+                    if($contador == 9){
+                        $contrasenyaEn = md5($contrasenya);
 
-                    if(mysqli_error($con)){
-                        echo "ERROR: ".mysqli_error($con);
+                        // Insercio del usuari registrat a la base de dades
+                        $sql = "insert into usuari(email,password,nom,cognoms,direccio,poblacio,cPostal,dadesFoto,tipusFoto,admin) values('" .$email. "','" .$contrasenyaEn. "','" .$nom. "','" .$cognoms. "','" .$direccio. "','" .$poblacio. "','" .$cPostal. "','". $dadesFoto ."','". $tipusFoto ."',' 0 ')";
+                        $r = mysqli_query($con,$sql);
+
+                        if(mysqli_error($con)){
+                            echo "ERROR: ".mysqli_error($con);
+                        } else {
+                            echo "Dades introduides correctament. ";
+                            echo "<br>";
+                        }
                     } else {
-                        echo "Dades introduides correctament. ";
-                        echo "<br>";
+                        echo "No pots deixar cap camp en vuit. ";
                     }
                 }
                 ?>
